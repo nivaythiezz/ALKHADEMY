@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ALKHADEMY — Learn to Ask.</title>
+<script src="[cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+<link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,900;1,9..144,400;1,9..144,900&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap)" rel="stylesheet">
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { paper:'#F2EADF', ink:'#141210', tomato:'#E8452C', moss:'#2F5D3A', sun:'#F2C12E' },
+  fontFamily: { serif:['Fraunces','serif'], sans:['Space Grotesk','sans-serif'], mono:['JetBrains Mono','monospace'] }
+}}}
+</script>
+<style>
+  body { background:#F2EADF; color:#141210; font-family:'Space Grotesk',sans-serif; }
+  .grain::before { content:""; position:fixed; inset:0; pointer-events:none; z-index:60; opacity:.18;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='[w3.org](http://www.w3.org/2000/svg)' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .grid-paper { background-image:linear-gradient(#14121014 1px,transparent 1px),linear-gradient(90deg,#14121014 1px,transparent 1px); background-size:32px 32px; }
+  .dots { background-image:radial-gradient(#141210 1.2px,transparent 1.2px); background-size:14px 14px; }
+  .marquee { animation:mq 28s linear infinite; white-space:nowrap; }
+  @keyframes mq { to { transform:translateX(-50%); } }
+  .reveal { opacity:0; transform:translateY(40px); transition:all .9s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { opacity:1; transform:none; }
+  .btn-stamp { border:2px solid #141210; box-shadow:5px 5px 0 #141210; transition:all .15s; }
+  .btn-stamp:hover { transform:translate(3px,3px); box-shadow:2px 2px 0 #141210; }
+  .btn-stamp:active { transform:translate(5px,5px); box-shadow:none; }
+  .wobble:hover { animation:wob .5s; }
+  @keyframes wob { 25%{transform:rotate(-3deg)} 75%{transform:rotate(3deg)} }
+  .clip-slant { clip-path:polygon(0 6%,100% 0,100% 94%,0 100%); }
+
+  /* Almigo avatar: circle head on a defined torso */
+  .almigo { position:relative; width:56px; height:64px; }
+  .almigo .head { position:absolute; top:0; left:50%; transform:translateX(-50%); width:34px; height:34px; border-radius:50%;
+    background:#F2C12E; border:2.5px solid #141210; z-index:2; }
+  .almigo .head::before, .almigo .head::after { content:""; position:absolute; top:12px; width:5px; height:7px; background:#141210; border-radius:3px; animation:blink 4s infinite; }
+  .almigo .head::before { left:8px; } .almigo .head::after { right:8px; }
+  .almigo .neck { position:absolute; top:31px; left:50%; transform:translateX(-50%); width:8px; height:6px; background:#141210; }
+  .almigo .torso { position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:48px; height:26px;
+    background:#E8452C; border:2.5px solid #141210; border-radius:14px 14px 4px 4px; }
+  .almigo .torso::after { content:"A"; position:absolute; inset:0; display:grid; place-items:center; font:900 12px 'Fraunces'; color:#F2EADF; }
+  @keyframes blink { 0%,92%,100%{transform:scaleY(1)} 95%{transform:scaleY(.1)} }
+  .almigo.think .head { animation:bob .6s infinite alternate; }
+  @keyframes bob { to { transform:translate(-50%,-3px) rotate(-6deg); } }
+
+  /* Loader */
+  #loader { transition:clip-path .9s cubic-bezier(.7,0,.2,1); clip-path:inset(0 0 0 0); }
+  #loader.done { clip-path:inset(0 0 100% 0); }
+  .load-bar { animation:lb 1.1s ease-in-out forwards; }
+  @keyframes lb { from{width:0} to{width:100%} }
+</style>
+</head>
+<body class="grain overflow-x-hidden">
+
+<!-- Custom loader -->
+<div id="loader" class="fixed inset-0 z-[100] bg-ink text-paper flex flex-col justify-end p-8">
+  <p class="font-mono text-xs tracking-widest text-sun">LOADING THE LAB · BPSHS</p>
+  <h1 class="font-serif font-black text-[18vw] leading-none">ALK<span class="italic text-tomato">.</span></h1>
+  <div class="h-1 bg-paper/20"><div class="load-bar h-1 bg-tomato"></div></div>
+</div>
+
+<!-- Vertical side rail navigation -->
+<nav class="fixed left-0 top-0 h-full w-14 md:w-20 bg-ink text-paper z-50 flex flex-col items-center justify-between py-6">
+  <a href="#top" class="font-serif font-black text-2xl text-sun">A<span class="text-tomato">.</span></a>
+  <ul class="flex flex-col gap-10 font-mono text-[11px] tracking-[.3em] [writing-mode:vertical-rl] rotate-180">
+    <li><a href="#learn" class="hover:text-sun">LEARN</a></li>
+    <li><a href="#practice" class="hover:text-sun">PRACTICE</a></li>
+    <li><a href="#classroom" class="hover:text-sun">CLASSROOM</a></li>
+    <li><a href="#dedication" class="hover:text-sun">FOR MA'AM ALDAY</a></li>
+  </ul>
+  <div class="text-center font-mono text-[10px]">
+    <div id="pts" class="text-sun text-sm font-bold">0</div>EP
+    <div class="mt-3 text-tomato text-sm font-bold">🔥<span id="streak">1</span></div>
+  </div>
+</nav>
+
+<main class="pl-14 md:pl-20" id="top">
+
+<!-- HERO: asymmetric, broken grid -->
+<section class="relative min-h-screen grid-paper overflow-hidden">
+  <div class="absolute top-6 right-6 font-mono text-[11px] text-right leading-relaxed">
+    FIG. 01 — EST. 2026<br>BATANGAS PROVINCE SCIENCE HIGH SCHOOL<br><span class="bg-ink text-paper px-1">100% FREE · ALL ROLES</span>
+  </div>
+  <div class="grid grid-cols-12 gap-4 pt-28 px-6 md:px-12">
+    <div class="col-span-12 lg:col-span-8 relative z-10">
+      <p class="font-mono text-xs tracking-widest mb-4">↳ A RESEARCH & STEM ACADEMY</p>
+      <h1 class="font-serif font-black leading-[.82] text-[19vw] lg:text-[13vw] tracking-tight">
+        Learn<br><span class="italic text-tomato ml-[8vw]">to</span> ask<span class="text-moss">.</span>
+      </h1>
+      <p class="mt-8 max-w-md text-lg border-l-4 border-tomato pl-4">
+        <b>ALKHADEMY</b> teaches you how science is actually built: research gaps, hypotheses, citations, and the math underneath.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a href="#learn" class="btn-stamp bg-sun px-6 py-4 font-bold uppercase tracking-wide">Start a course →</a>
+        <button onclick="toggleAlmigo(true)" class="btn-stamp bg-paper px-6 py-4 font-bold uppercase tracking-wide">Ask Almigo</button>
+      </div>
+    </div>
+    <!-- overlapping shapes -->
+    <div class="hidden lg:block col-span-4 relative">
+      <div class="absolute top-10 right-0 w-72 h-96 bg-moss rotate-3 border-2 border-ink"></div>
+      <div class="absolute top-24 right-16 w-64 h-80 bg-tomato -rotate-6 border-2 border-ink dots mix-blend-multiply"></div>
+      <div class="absolute top-40 right-8 w-56 bg-paper border-2 border-ink p-5 rotate-2 shadow-[8px_8px_0_#141210]">
+        <p class="font-mono text-[10px]">HYPOTHESIS CARD №7</p>
+        <p class="font-serif italic text-2xl mt-2 leading-tight">"If light ↑, then mung bean growth ↑."</p>
+        <p class="font-mono text-[10px] mt-3 text-tomato">✓ testable · ✓ directional</p>
+      </div>
+      <div class="absolute top-[26rem] right-52 w-24 h-24 rounded-full bg-sun border-2 border-ink grid place-items-center font-mono text-[10px] text-center animate-spin [animation-duration:14s]">· IMRaD · APA 7 · IEEE ·</div>
+    </div>
+  </div>
+  <!-- kinetic marquee -->
+  <div class="absolute bottom-0 left-0 right-0 bg-ink text-paper py-3 overflow-hidden border-y-2 border-ink">
+    <div class="marquee font-serif italic text-3xl inline-block">
+      Research Gap ✶ Hypothesis ✶ Conceptual Framework ✶ ANOVA ✶ APA 7th ✶ Zotero ✶ Calculus ✶ Taal Volcano ✶ Stoichiometry ✶
+      Research Gap ✶ Hypothesis ✶ Conceptual Framework ✶ ANOVA ✶ APA 7th ✶ Zotero ✶ Calculus ✶ Taal Volcano ✶ Stoichiometry ✶
+    </div>
+  </div>
+</section>
+
+<!-- LEARN: editorial index, not cards -->
+<section id="learn" class="relative bg-paper px-6 md:px-12 py-24">
+  <div class="grid grid-cols-12 gap-6">
+    <div class="col-span-12 md:col-span-4 reveal">
+      <p class="font-mono text-xs">SECTION 02 / THE INDEX</p>
+      <h2 class="font-serif font-black text-7xl leading-none mt-2">What<br>will you<br><i class="text-moss">study?</i></h2>
+      <p class="mt-6 font-mono text-xs leading-relaxed">Subject → Course → Unit → Lesson.<br>Click a subject to open its table of contents.</p>
+    </div>
+    <div class="col-span-12 md:col-span-8">
+      <ol id="subjects" class="border-t-2 border-ink"></ol>
+    </div>
+  </div>
+  <div id="courseView" class="mt-16 hidden"></div>
+</section>
+
+<!-- PRACTICE: dark, slanted -->
+<section id="practice" class="relative bg-ink text-paper clip-slant py-32 px-6 md:px-12">
+  <div class="absolute inset-0 dots opacity-10"></div>
+  <div class="relative grid grid-cols-12 gap-8">
+    <div class="col-span-12 lg:col-span-5 reveal">
+      <p class="font-mono text-xs text-sun">SECTION 03 / MASTERY ENGINE</p>
+      <h2 class="font-serif font-black text-6xl md:text-8xl leading-[.85] mt-3">Try.<br><span class="text-tomato italic">Miss.</span><br>Master.</h2>
+      <div class="mt-10 flex gap-0 font-mono text-[11px]" id="masteryBar">
+        <span class="flex-1 border border-paper/40 p-2">PRACTICED</span>
+        <span class="flex-1 border border-paper/40 p-2">LEVEL 1</span>
+        <span class="flex-1 border border-paper/40 p-2">LEVEL 2</span>
+        <span class="flex-1 border border-paper/40 p-2">MASTERED</span>
+      </div>
+      <p class="mt-4 font-mono text-xs text-paper/60">Every hint you reveal lowers the energy points you earn. Fewer hints mean faster mastery.</p>
+    </div>
+    <div id="exerciseBox" class="col-span-12 lg:col-span-7 bg-paper text-ink border-2 border-paper p-8 -rotate-1 shadow-[12px_12px_0_#E8452C] reveal"></div>
+  </div>
+</section>
+
+<!-- CLASSROOM + PARENT: split, overlapping -->
+<section id="classroom" class="relative px-6 md:px-12 py-28 bg-sun">
+  <h2 class="font-serif font-black text-[14vw] leading-none opacity-90 -mb-10 select-none">Classroom</h2>
+  <div class="grid grid-cols-12 gap-6 relative">
+    <div class="col-span-12 md:col-span-7 bg-paper border-2 border-ink p-8 reveal">
+      <p class="font-mono text-xs">FOR TEACHERS · FREE</p>
+      <h3 class="font-serif text-4xl font-black mt-2">Open a class in one click.</h3>
+      <p class="mt-3">Generate a class code, assign lessons with due dates, and see who's stuck where.</p>
+      <button onclick="createClass()" class="btn-stamp bg-tomato text-paper mt-6 px-5 py-3 font-bold uppercase">Generate class code</button>
+      <p id="classCode" class="font-mono text-3xl mt-4 tracking-widest"></p>
+      <!-- heatmap -->
+      <p class="font-mono text-[10px] mt-6">ACCURACY HEATMAP — SAMPLE · 5 STUDENTS × 6 SKILLS</p>
+      <div id="heatmap" class="grid grid-cols-6 gap-1 mt-2"></div>
+    </div>
+    <div class="col-span-12 md:col-span-5 md:-ml-16 md:mt-24 bg-moss text-paper border-2 border-ink p-8 rotate-1 reveal">
+      <p class="font-mono text-xs text-sun">FOR PARENTS · FREE</p>
+      <h3 class="font-serif text-4xl font-black italic mt-2">See the progress, not just grades.</h3>
+      <ul class="mt-4 font-mono text-sm space-y-2">
+        <li>▸ Completion rates per course</li>
+        <li>▸ Assigned study schedules</li>
+        <li>▸ Streaks & badges earned</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DEDICATION -->
+<section id="dedication" class="relative bg-paper py-28 px-6 md:px-12 border-t-8 border-ink">
+  <div class="grid grid-cols-12 gap-6 items-end">
+    <p class="col-span-12 md:col-span-2 font-mono text-xs reveal">DEDICATION<br>№ 01</p>
+    <blockquote class="col-span-12 md:col-span-8 font-serif text-5xl md:text-7xl leading-[.95] reveal">
+      For <span class="italic text-tomato">Ma'am Alday</span>, who taught us that every good answer begins with a better question.
+    </blockquote>
+    <p class="col-span-12 md:col-span-2 font-mono text-xs text-right reveal">— built by<br><b>Nathan Robles</b><br>for the BPSHS STEM community</p>
+  </div>
+</section>
+
+<footer class="bg-ink text-paper px-6 md:px-12 py-6 flex justify-between font-mono text-[11px]">
+  <span>ALKHADEMY © 2026</span><span>FREE FOREVER · BPSHS</span>
+</footer>
+</main>
+
+<!-- ALMIGO WIDGET -->
+<button id="almigoBtn" onclick="toggleAlmigo()" class="fixed bottom-5 right-5 z-50 bg-paper border-2 border-ink p-2 shadow-[5px_5px_0_#141210] wobble" aria-label="Open Almigo">
+  <div class="almigo"><div class="head"></div><div class="neck"></div><div class="torso"></div></div>
+</button>
+<div id="almigoPanel" class="fixed bottom-28 right-5 z-50 w-[92vw] max-w-sm bg-paper border-2 border-ink shadow-[8px_8px_0_#141210] hidden flex-col">
+  <div class="flex items-center gap-3 bg-ink text-paper p-3">
+    <div class="almigo scale-75" id="almigoHead"><div class="head"></div><div class="neck"></div><div class="torso"></div></div>
+    <div class="flex-1"><p class="font-serif font-black text-xl leading-none">Almigo</p><p class="font-mono text-[10px] text-sun" id="modeLabel">STUDENT MODE · SOCRATIC</p></div>
+    <button onclick="switchMode()" class="font-mono text-[10px] border border-paper px-2 py-1 hover:bg-sun hover:text-ink">SWITCH</button>
+  </div>
+  <div id="chat" class="h-72 overflow-y-auto p-4 space-y-3 text-sm grid-paper"></div>
+  <form onsubmit="sendMsg(event)" class="flex border-t-2 border-ink">
+    <input id="msg" class="flex-1 bg-transparent p-3 outline-none font-mono text-sm" placeholder="Ask about hypotheses, APA..." autocomplete="off">
+    <button class="bg-tomato text-paper px-4 font-bold">→</button>
+  </form>
+</div>
+
+<script>
+const API = location.protocol.startsWith('http') && !location.hostname.endsWith('github.io') ? '' : null;
+let DATA = [], mode = 'student', points = 0, current = null, hintN = 0;
+
+const FALLBACK = [
+  {id:'research',title:'Research Methodology',tag:'R—01',color:'#E8452C',courses:[{id:'rd',title:'Designing a Study',units:[
+    {id:'u1',title:'Finding the Gap',lessons:[{id:'l1',title:'What is a research gap?',type:'article'},{id:'l3',title:'Gap or not? Practice',type:'exercise',exercises:[{id:'e1',prompt:'Which statement is a testable hypothesis?',choices:['Plants are interesting.','Increasing light exposure increases the growth rate of mung beans.','What makes plants grow?','Mung beans are green.'],answer:1,hints:['A hypothesis predicts a relationship.','Look for an independent and a dependent variable.','Which option says what happens to Y when X changes?']}]}]},
+    {id:'u3',title:'Data & Statistics',lessons:[{id:'l7',title:'Choosing t-test vs ANOVA',type:'exercise',exercises:[{id:'e2',prompt:'You compare mean scores of THREE independent groups. Which test fits?',choices:['Paired t-test','Chi-square','One-way ANOVA','Pearson r'],answer:2,hints:['How many groups?','t-tests compare only two means.','Analysis of Variance handles 3+ groups.']}]}]}]}]},
+  {id:'citation',title:'Citation & Integrity',tag:'C—02',color:'#2F5D3A',courses:[{id:'c',title:'Citing Like a Scientist',units:[{id:'u4',title:'APA 7th Edition',lessons:[{id:'l9',title:'Spot the APA error',type:'exercise',exercises:[{id:'e3',prompt:'Correct APA 7 in-text citation for 3 authors (Reyes, Cruz, Lim, 2023)?',choices:['(Reyes, Cruz, & Lim, 2023)','(Reyes et al., 2023)','(Reyes 2023)','[1]'],answer:1,hints:['APA 7 changed the rule for 3+ authors.','Name only the first author.','Use et al.']}]}]}]}]},
+  {id:'stem',title:'Advanced STEM',tag:'S—03',color:'#F2C12E',courses:[{id:'p',title:'Physics',units:[{id:'u7',title:'Kinematics',lessons:[{id:'l13',title:'Motion graphs',type:'article'}]}]},{id:'calc',title:'Analytical Calculus',units:[{id:'u11',title:'Limits & Derivatives',lessons:[{id:'l17',title:'The derivative as a rate',type:'video'}]}]}]},
+  {id:'english',title:'Scientific English',tag:'E—04',color:'#141210',courses:[{id:'m',title:'Manuscript Preparation',units:[{id:'u13',title:'IMRaD Structure',lessons:[{id:'l19',title:'Writing an abstract',type:'article'}]}]}]}
+];
+
+async function load() {
+  try { if (API === null) throw 0; DATA = await (await fetch('/api/subjects')).json(); }
+  catch { DATA = FALLBACK; }
+  renderSubjects(); pickFirstExercise(); heatmap();
+  setTimeout(() => document.getElementById('loader').classList.add('done'), 1200);
+}
+
+function renderSubjects() {
+  document.getElementById('subjects').innerHTML = DATA.map((s,i) => `
+    <li onclick="openSubject('${s.id}')" class="group cursor-pointer border-b-2 border-ink py-6 flex items-baseline gap-6 hover:pl-6 transition-all relative overflow-hidden">
+      <span class="absolute inset-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-500" style="background:${s.color};opacity:.9"></span>
+      <span class="relative font-mono text-xs w-14">${s.tag}</span>
+      <span class="relative font-serif font-black text-4xl md:text-6xl group-hover:italic ${s.color==='#141210'?'group-hover:text-paper':''}">${s.title}</span>
+      <span class="relative ml-auto font-mono text-xs">${s.courses.length} course${s.courses.length>1?'s':''} →</span>
+    </li>`).join('');
+}
+
+function openSubject(id) {
+  const s = DATA.find(x => x.id === id), v = document.getElementById('courseView');
+  v.classList.remove('hidden');
+  v.innerHTML = `
+    <div class="border-2 border-ink" style="box-shadow:10px 10px 0 ${s.color}">
+      <div class="p-6 flex justify-between items-end text-paper" style="background:${s.color==='#F2C12E'?'#141210':s.color}">
+        <h3 class="font-serif font-black text-5xl">${s.title}</h3><span class="font-mono text-xs">PROGRESS · <span id="prog">0</span>%</span>
+      </div>
+      ${s.courses.map(c => `
+        <div class="grid md:grid-cols-12 border-t-2 border-ink">
+          <div class="md:col-span-3 p-6 bg-ink text-paper font-serif text-2xl italic">${c.title}</div>
+          <div class="md:col-span-9 p-6 grid sm:grid-cols-2 gap-6">
+            ${c.units.map((u,i) => `
+              <div><p class="font-mono text-[10px]">UNIT ${String(i+1).padStart(2,'0')}</p>
+              <p class="font-bold text-lg border-b border-ink mb-2">${u.title}</p>
+              ${u.lessons.map(l => `<button onclick='startLesson(${JSON.stringify(l).replace(/'/g,"&#39;")})' class="block w-full text-left py-1 hover:text-tomato hover:translate-x-1 transition">
+                <span class="font-mono text-[10px] inline-block w-16 uppercase">${{video:'▶ video',article:'¶ read',exercise:'✎ practice'}[l.type]}</span>${l.title}</button>`).join('')}
+              </div>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>`;
+  v.scrollIntoView({behavior:'smooth'});
+}
+
+function startLesson(l) {
+  if (l.type === 'exercise') { current = l.exercises[0]; hintN = 0; renderExercise(); document.getElementById('practice').scrollIntoView({behavior:'smooth'}); }
+  else { toggleAlmigo(true); addMsg('almigo', `You opened “${l.title}”. Before you dive in, what do you think this lesson will help you do in your own research?`); }
+}
+
+function pickFirstExercise() {
+  for (const s of DATA) for (const c of s.courses) for (const u of c.units) for (const l of u.lessons)
+    if (l.exercises) { current = l.exercises[0]; return renderExercise(); }
+}
+
+function renderExercise(feedback='') {
+  const e = current;
+  document.getElementById('exerciseBox').innerHTML = `
+    <div class="flex justify-between font-mono text-[10px]"><span>EXERCISE · ${e.id.toUpperCase()}</span><span>HINTS ${hintN}/${e.hints.length}</span></div>
+    <p class="font-serif text-3xl font-black mt-3 leading-tight">${e.prompt}</p>
+    <div class="mt-6 space-y-2">${e.choices.map((c,i) => `
+      <button onclick="check(${i})" class="w-full text-left border-2 border-ink p-3 hover:bg-sun transition flex gap-3"><span class="font-mono font-bold">${'ABCD'[i]}</span>${c}</button>`).join('')}</div>
+    <div class="mt-4 space-y-1">${e.hints.slice(0,hintN).map((h,i)=>`<p class="font-mono text-xs bg-sun/40 border-l-4 border-sun p-2">HINT ${i+1}: ${h}</p>`).join('')}</div>
+    <div class="mt-4 flex justify-between items-center">
+      <button onclick="hint()" class="font-mono text-xs underline decoration-tomato decoration-2 underline-offset-4">Reveal step-by-step hint</button>
+      <span class="font-bold">${feedback}</span>
+    </div>`;
+}
+
+function hint() { if (hintN < current.hints.length) { hintN++; renderExercise(); } }
+
+async function check(i) {
+  let correct, level;
+  try {
+    if (API === null) throw 0;
+    const r = await (await fetch(`/api/exercises/${current.id}/check`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({choice:i,hintsUsed:hintN})})).json();
+    correct = r.correct; points = r.points; level = r.level;
+  } catch { correct = i === current.answer; if (correct) points += Math.max(10, 50 - hintN*10); level = correct ? (hintN ? 'Level 1' : 'Level 2') : 'Practiced'; }
+  document.getElementById('pts').textContent = points;
+  const idx = ['Practiced','Level 1','Level 2','Mastered'].indexOf(level);
+  [...document.getElementById('masteryBar').children].forEach((el,k) => { el.style.background = k <= idx ? '#E8452C' : ''; });
+  renderExercise(correct ? `<span class="text-moss">✓ Correct · ${level}</span>` : `<span class="text-tomato">✗ Not quite. Try a hint?</span>`);
+}
+
+function heatmap() {
+  document.getElementById('heatmap').innerHTML = Array.from({length:30}, () => {
+    const v = Math.random(); const c = v>.75?'#2F5D3A':v>.5?'#F2C12E':v>.25?'#E8452C99':'#E8452C';
+    return `<div class="h-6 border border-ink hover:scale-125 transition" style="background:${c}" title="${Math.round(v*100)}% accuracy"></div>`;
+  }).join('');
+}
+
+async function createClass() {
+  let code;
+  try { if (API === null) throw 0; code = (await (await fetch('/api/classrooms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'Research 10'})})).json()).code; }
+  catch { code = 'BPS-' + Math.random().toString(36).slice(2,7).toUpperCase(); }
+  document.getElementById('classCode').textContent = code;
+}
+
+/* Almigo */
+function toggleAlmigo(force) {
+  const p = document.getElementById('almigoPanel');
+  const open = force ?? p.classList.contains('hidden');
+  p.classList.toggle('hidden', !open); p.classList.toggle('flex', open);
+  if (open && !document.getElementById('chat').children.length)
+    addMsg('almigo', "Hi! I'm Almigo. I won't give you answers, but I'll help you find them. What are you working on?");
+}
+function switchMode() {
+  mode = mode === 'student' ? 'teacher' : 'student';
+  document.getElementById('modeLabel').textContent = mode === 'student' ? 'STUDENT MODE · SOCRATIC' : "TEACHER MODE · FOR MA'AM ALDAY";
+  addMsg('almigo', mode === 'teacher' ? 'Teacher Mode on. I can draft rubrics, quiz items, or analyze class progress.' : 'Back to Student Mode. What question are we exploring?');
+}
+function addMsg(who, text) {
+  const d = document.createElement('div');
+  d.className = who === 'me' ? 'ml-auto max-w-[80%] bg-ink text-paper p-3 font-mono text-xs' : 'max-w-[85%] bg-paper border-2 border-ink p-3 whitespace-pre-line';
+  d.textContent = text;
+  const c = document.getElementById('chat'); c.appendChild(d); c.scrollTop = c.scrollHeight;
+}
+async function sendMsg(e) {
+  e.preventDefault();
+  const i = document.getElementById('msg'), text = i.value.trim(); if (!text) return;
+  addMsg('me', text); i.value = '';
+  const head = document.getElementById('almigoHead'); head.classList.add('think');
+  let reply;
+  try { if (API === null) throw 0; reply = (await (await fetch('/api/almigo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode,message:text})})).json()).reply; }
+  catch { reply = mode === 'teacher' ? 'Connect the Node server to unlock full Teacher Mode. Meanwhile: shall we sketch a 4-criterion research rubric?' : 'Good start! What do you already know about this, and where exactly are you stuck?'; }
+  setTimeout(() => { head.classList.remove('think'); addMsg('almigo', reply); }, 500);
+}
+
+/* Scroll reveal */
+const io = new IntersectionObserver(es => es.forEach(x => x.isIntersecting && x.target.classList.add('in')), {threshold:.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+load();
+</script>
+</body>
+</html>
