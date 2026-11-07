@@ -1,6 +1,15 @@
 # ALKHADEMY
 a learning site for research inspired by khan academy, made by NVTH
 Prompt:Below is a complete, runnable Node.js + TypeScript project for ALKHADEMY, followed by the steps to put it on GitHub. Create each file at the path shown in its heading and paste in the code.
+# ALKHADEMY
+Free research & STEM learning portal for Batangas Province Science High School.
+Created by **Nathan Robles**, dedicated to **Ma'am Alday**.
+
+## Run locally
+npm install
+npm run dev
+# open [localhost](http://localhost:3000)
+
 
 About the database: the server keeps progress in memory, so it runs right away without PostgreSQL. The Prisma schema is included and ready for when you set up a database.
 
