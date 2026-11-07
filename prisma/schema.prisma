@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role { STUDENT TEACHER PARENT }
+enum MasteryLevel { NOT_STARTED PRACTICED LEVEL_1 LEVEL_2 MASTERED }
+enum ContentType { VIDEO ARTICLE EXERCISE SIMULATION WORKSHEET }
+enum AlmigoMode { STUDENT TEACHER }
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  role         Role      @default(STUDENT)
+  energyPoints Int       @default(0)
+  streakDays   Int       @default(0)
+  lastActiveAt DateTime?
+  createdAt    DateTime  @default(now())
+
+  mastery      Mastery[]
+  attempts     ExerciseAttempt[]
+  badges       UserBadge[]
+  taught       Classroom[]        @relation("TeacherClassrooms")
+  enrollments  Enrollment[]
+  almigoLogs   AlmigoLog[]
+  children     ParentLink[]       @relation("ParentSide")
+  parents      ParentLink[]       @relation("ChildSide")
+}
+
+model ParentLink {
+  id       String @id @default(cuid())
+  parentId String
+  childId  String
+  parent   User   @relation("ParentSide", fields: [parentId], references: [id])
+  child    User   @relation("ChildSide",  fields: [childId],  references: [id])
+  @@unique([parentId, childId])
+}
+
+model Subject {
+  id      String   @id @default(cuid())
+  slug    String   @unique
+  title   String
+  color   String
+  courses Course[]
+}
+
+model Course {
+  id        String  @id @default(cuid())
+  slug      String  @unique
+  title     String
+  subjectId String
+  subject   Subject @relation(fields: [subjectId], references: [id])
+  units     Unit[]
+}
+
+model Unit {
+  id       String   @id @default(cuid())
+  title    String
+  order    Int
+  courseId String
+  course   Course   @relation(fields: [courseId], references: [id])
+  lessons  Lesson[]
+}
+
+model Lesson {
+  id       String    @id @default(cuid())
+  title    String
+  order    Int
+  unitId   String
+  unit     Unit      @relation(fields: [unitId], references: [id])
+  contents Content[]
+}
+
+model Content {
+  id         String      @id @default(cuid())
+  type       ContentType
+  title      String
+  body       String?
+  videoUrl   String?
+  lessonId   String
+  lesson     Lesson      @relation(fields: [lessonId], references: [id])
+  exercises  Exercise[]
+  mastery    Mastery[]
+  assignments Assignment[]
+}
+
+model Exercise {
+  id        String   @id @default(cuid())
+  prompt    String
+  choices   String[]
+  answer    Int
+  hints     String[]
+  contentId String
+  content   Content  @relation(fields: [contentId], references: [id])
+  attempts  ExerciseAttempt[]
+}
+
+model ExerciseAttempt {
+  id         String   @id @default(cuid())
+  userId     String
+  exerciseId String
+  correct    Boolean
+  hintsUsed  Int      @default(0)
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+}
+
+model Mastery {
+  id        String       @id @default(cuid())
+  userId    String
+  contentId String
+  level     MasteryLevel @default(NOT_STARTED)
+  updatedAt DateTime     @updatedAt
+  user      User         @relation(fields: [userId], references: [id])
+  content   Content      @relation(fields: [contentId], references: [id])
+  @@unique([userId, contentId])
+}
+
+model Badge {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  description String
+  users       UserBadge[]
+}
+
+model UserBadge {
+  userId   String
+  badgeId  String
+  earnedAt DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id])
+  badge    Badge    @relation(fields: [badgeId], references: [id])
+  @@id([userId, badgeId])
+}
+
+model Classroom {
+  id          String       @id @default(cuid())
+  name        String
+  code        String       @unique
+  teacherId   String
+  teacher     User         @relation("TeacherClassrooms", fields: [teacherId], references: [id])
+  enrollments Enrollment[]
+  assignments Assignment[]
+}
+
+model Enrollment {
+  userId      String
+  classroomId String
+  user        User      @relation(fields: [userId], references: [id])
+  classroom   Classroom @relation(fields: [classroomId], references: [id])
+  @@id([userId, classroomId])
+}
+
+model Assignment {
+  id          String    @id @default(cuid())
+  classroomId String
+  contentId   String
+  dueDate     DateTime
+  classroom   Classroom @relation(fields: [classroomId], references: [id])
+  content     Content   @relation(fields: [contentId], references: [id])
+}
+
+model AlmigoLog {
+  id        String     @id @default(cuid())
+  userId    String?
+  mode      AlmigoMode
+  message   String
+  reply     String
+  createdAt DateTime   @default(now())
+  user      User?      @relation(fields: [userId], references: [id])
+}
